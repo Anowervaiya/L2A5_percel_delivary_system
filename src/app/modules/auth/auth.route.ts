@@ -1,8 +1,14 @@
 import { NextFunction, Request, Response, Router } from "express";
 import passport from "passport";
 import { AuthConrollers } from "./auth.controller";
+import { checkAuth } from "../../middlewares/checkAuth";
+import { Role } from "../user/user.interfaces";
 
 const router = Router()
+
+router.post('/login', AuthConrollers.credentialsLogin)
+
+router.post('/set-password' , checkAuth(...Object.values(Role)) , AuthConrollers.setPassword)
 
 router.get('/google', async(req: Request, res: Response, next: NextFunction) => {
   passport.authenticate("google", {scope: ["profile" , "email"]})(req,res)
