@@ -1,0 +1,89 @@
+import { NextFunction, Request, Response } from 'express';
+import { catchAsync } from '../../utils/catchAsync';
+import { ParcelService } from './percel.service';
+import { sendResponse } from '../../utils/sendResponse';
+import httpStatus from 'http-status-codes';
+import { JwtPayload } from 'jsonwebtoken';
+
+const createParcel = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+
+    const user= req.user;
+    const parcel = await ParcelService.createParcel(user, req.body);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.ACCEPTED,
+      message: 'parcel is created succesfully',
+      data: parcel,
+    });
+  }
+);
+const cancelParcel = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const Id = req.params.id;
+    const user = req.user as string;
+    const parcel = await ParcelService.cancelParcel(Id, user);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.ACCEPTED,
+      message: 'parcel is cancelled succesfully',
+      data: parcel,
+    });
+  }
+);
+
+const changeParcelStatus = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const Id = req.params.id;
+    const user = req.user as string;
+    const {status} = req.body;
+    const parcel = await ParcelService.changeParcelStatus(Id, user , status);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.ACCEPTED,
+      message: 'parcel status is changed succesfully',
+      data: parcel,
+    });
+  }
+);
+const myParcel = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user ;
+
+   const parcel = await ParcelService.myParcel(user)
+    
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.ACCEPTED,
+      message: 'parcel status is changed succesfully',
+      data: parcel,
+    });
+  }
+);
+const ParcelByTrackingId = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const trackingId = req.params.trackingId;
+
+    const parcel = await ParcelService.ParcelByTrackingId(trackingId);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.ACCEPTED,
+      message: 'parcel retrieved succussfully',
+      data: parcel,
+    });
+  }
+);
+
+
+
+export const ParcelController = {
+  createParcel,
+  cancelParcel,
+  changeParcelStatus,
+  myParcel,
+  ParcelByTrackingId,
+};
