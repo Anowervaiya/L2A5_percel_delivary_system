@@ -34,6 +34,21 @@ const cancelParcel = catchAsync(
   }
 );
 
+const confirmParcel = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const Id = req.params.id;
+    const user = req.user as string;
+    const parcel = await ParcelService.confirmParcel(Id, user);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.ACCEPTED,
+      message: 'parcel is delivered succesfully',
+      data: parcel,
+    });
+  }
+);
+
 const changeParcelStatus = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const Id = req.params.id;
@@ -63,17 +78,32 @@ const myParcel = catchAsync(
     });
   }
 );
+const allParcel = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+  
+
+    const result = await ParcelService.allParcel();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.ACCEPTED,
+      message: 'All parcel are retrieved succesfully',
+      data: result.data,
+      meta: result.meta
+    });
+  }
+);
 const ParcelByTrackingId = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const trackingId = req.params.trackingId;
 
-    const parcel = await ParcelService.ParcelByTrackingId(trackingId);
+    const parcel = await ParcelService.ParcelByTrackingId(trackingId) ;
 
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.ACCEPTED,
       message: 'parcel retrieved succussfully',
-      data: parcel,
+      data:parcel
     });
   }
 );
@@ -86,4 +116,6 @@ export const ParcelController = {
   changeParcelStatus,
   myParcel,
   ParcelByTrackingId,
+  allParcel,
+  confirmParcel,
 };

@@ -4,6 +4,7 @@ import { UserServices } from "./user.service";
 import { sendResponse } from "../../utils/sendResponse";
 
 import httpStatus from 'http-status-codes'
+import AppError from "../../errorHelpers/appError";
 
 const createUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const user = await UserServices.createUser(req.body)
@@ -12,6 +13,20 @@ const createUser = catchAsync(async (req: Request, res: Response, next: NextFunc
     success: true,
     statusCode: httpStatus.CREATED,
     message: "User Created Successfully",
+    data: user
+  })
+})
+const blockUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const Id = req.params.id;
+  const status = req.body.isBlock;
+
+
+  const user = await UserServices.blockUser(Id, status);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.CREATED,
+    message: "User status is changed Successfully",
     data: user
   })
 })
@@ -32,6 +47,6 @@ const getAllUsers = catchAsync(
 
 export const UserControllers = {
   createUser,
-  getAllUsers
- 
+  getAllUsers,
+  blockUser,
 };

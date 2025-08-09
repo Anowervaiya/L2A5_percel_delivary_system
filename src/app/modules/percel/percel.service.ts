@@ -39,6 +39,16 @@ const cancelParcel = async (id: string, user: any) => {
     throw new AppError(httpStatus.BAD_REQUEST, 'parcel does not exist');
   }
 
+   if (
+     parcel.statusLogs?.some(status => status.status === ParcelStatus.DISPATCHED || ParcelStatus.IN_TRANSIT)
+   ) {
+     throw new AppError(
+       httpStatus.BAD_GATEWAY,
+       "parcel is already DISPATCHED . you can't cancel it now"
+     );
+   }
+
+
   if (
     parcel.statusLogs?.some(status => status.status === ParcelStatus.CANCELLED)
   ) {
@@ -68,6 +78,53 @@ const cancelParcel = async (id: string, user: any) => {
 
   return changableParcel;
 };
+const confirmParcel = async (id: string, user: any) => {
+  const parcel = await Parcel.findById(id);
+  if (!parcel) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'parcel does not exist');
+  }
+
+  
+
+  if (
+    parcel.statusLogs?.some(status => status.status === ParcelStatus.CANCELLED )
+  ) {
+    throw new AppError(
+      httpStatus.BAD_GATEWAY,
+      "parcel is already cancelled .. you can't change the status"
+    );
+  }
+  if (
+    parcel.statusLogs?.some(status => status.status === ParcelStatus.DELIVERED )
+  ) {
+    throw new AppError(
+      httpStatus.BAD_GATEWAY,
+      "parcel is already delivered .. you can't change the status"
+    );
+  }
+
+
+  const changableParcel = await Parcel.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        currentStatus: ParcelStatus.DELIVERED,
+      },
+      $push: {
+        statusLogs: {
+          status: ParcelStatus.DELIVERED,
+          updatedBy: user.userId,
+          updatedAt: new Date(),
+        },
+      },
+    },
+    { new: true, runValidators: true }
+  );
+
+  return changableParcel;
+};
+
+
 const changeParcelStatus = async (id: string, user: any, status: string) => {
 
   const parcel = await Parcel.findById( id )
@@ -118,6 +175,27 @@ const myParcel = async (user : any) => {
 
   return parcel;
 };
+const allParcel = async () => {
+  
+
+  const parcel = await Parcel.find()
+
+  const totalParcel = await Parcel.countDocuments();
+  
+  if (parcel.length === 0) {
+    throw new AppError( httpStatus.NO_CONTENT,'No Parcel Found')
+  }
+
+ 
+
+  return {
+    data: parcel,
+    meta: {
+      total: totalParcel,
+    },
+  };
+  
+};
 const ParcelByTrackingId = async (trackingId: string) => {
   const parcel = await Parcel.findOne({trackingId: trackingId });
 
@@ -130,4 +208,6 @@ export const ParcelService = {
   changeParcelStatus,
   myParcel,
   ParcelByTrackingId,
+  allParcel,
+  confirmParcel,
 };
