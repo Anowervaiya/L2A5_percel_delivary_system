@@ -69,17 +69,19 @@ npm start
 
 ### 🛠 Technologies Used
 
--Node.js - JavaScript runtime
+- Node.js - JavaScript runtime
+  
+- Typescript- language
 
--Express.js - Backend framework
+- Express.js - Backend framework
 
--MongoDB - NoSQL database
+- MongoDB - NoSQL database
 
--Mongoose - ODM for MongoDB
+- Mongoose - ODM for MongoDB
 
--JWT - Authentication
+- JWT - Authentication
 
--Bcrypt - Password hashing
+- Bcrypt - Password hashing
 
 
 
