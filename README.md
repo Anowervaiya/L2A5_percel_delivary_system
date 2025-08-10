@@ -67,7 +67,63 @@ npm run build
 npm start
 ```
 
-### 🛠 Technologies Used
+
+# 📍 API Endpoints Summary
+
+## 🔐 Auth Routes
+| Method | Endpoint              | Description |
+|--------|-----------------------|-------------|
+| **POST** | `/api/v1/auth/login` | login a  user|
+| **POST** | `/api/v1/auth/set-password`    | set password for who sign in with google |
+
+| **GET**  | `/api/v1/auth/google`       | google login |
+
+| **GET**  | `/api/v1/auth/google`       | google callback api |
+
+---
+
+### 📦 User Routes
+
+| Method  | Endpoint                  | Access Roles        | Description |
+|---------|---------------------------|--------------------|-------------|
+| **POST**    | `/api/v1/user/register`          | **anyone** | register a new user|
+| **GET**    | `/api/v1/user/all-user`         | **Admin**           | Get all users |
+
+| **PATCH**  | `/api/v1/user/delete/:id`         | **Admin**           | delete a user |
+| **DELETE** | `/api/v1/user/block/:id`         | **Admin**           |block or unblock a user|
+
+---
+
+
+### 📦 Parcel Routes
+
+| Method  | Endpoint                  | Access Roles        | Description |
+|---------|---------------------------|--------------------|-------------|
+| **GET**    | `/api/v1/parcel/my-parcel`          | **Sender, Receiver** | Get parcels related to the logged-in user |
+| **GET**    | `/api/v1/parcel/all-parcel`         | **Admin**           | Get all parcels |
+| **POST**   | `/api/v1/parcel/create-parcel`      | **Sender**          | Create a new parcel |
+| **GET**    | `/api/v1/parcel/filterByStatus`     | **Admin**           | Filter parcels by their status |
+| **GET**    | `/api/v1/parcel/track/:trackingId`  | **All Roles**       | Track a parcel by its tracking ID |
+| **PATCH**  | `/api/v1/parcel/cancel/:id`         | **Sender**          | Cancel a parcel (if not yet delivered) |
+| **PATCH**  | `/api/v1/parcel/confirm/:id`        | **Receiver**        | Confirm parcel delivery |
+| **PATCH**  | `/api/v1/parcel/status/:id`         | **Admin**           | Update parcel status (adds to `statusLog`) |
+| **DELETE** | `/api/v1/parcel/delete/:id`         | **Admin**           | Delete a parcel from the system |
+
+---
+
+### 📦 Status Log Example
+Each parcel contains a `statusLog` array to record every stage in its journey.
+
+```json
+"statusLog": [
+  { "status": "created", "timestamp": "2025-08-09T14:30:00Z", "updatedBy": "userId" },
+  { "status": "picked-up", "timestamp": "2025-08-09T16:00:00Z", "updatedBy": "staffId" },
+  { "status": "in-transit", "timestamp": "2025-08-09T20:00:00Z", "updatedBy": "staffId" },
+  { "status": "delivered", "timestamp": "2025-08-10T12:00:00Z", "updatedBy": "staffId" }
+]
+```
+
+###  Technologies Used
 
 - Node.js - JavaScript runtime
   
@@ -84,7 +140,10 @@ npm start
 - Bcrypt - Password hashing
 
 
-
+### Author
+Developed by Anower Hossen
+📧 Email: mdanowerhossen727@gmail.com
+🔗 LinkedIn: www.linkedin.com/in/anowerhossen
 
 
 
