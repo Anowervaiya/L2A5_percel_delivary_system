@@ -19,6 +19,7 @@ const moduleRoutes = [
     path: '/parcel',
     route: PercelRout, 
   },
+ 
   // {
   //     path: "/tour",
   //     route: TourRoutes

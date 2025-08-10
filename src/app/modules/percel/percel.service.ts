@@ -6,15 +6,7 @@ import { Parcel } from "./percel.model";
 import httpStatus from 'http-status-codes'
 
 const createParcel = async (user: any, payload: Partial<IParcel>) => {
-
-
-  
 const  trackingId = `trackId_${Date.now()}_${Math.floor(Math.random() * 1000)}`
-
-
-
-
-
   const info = {
     ...payload,
     trackingId,
@@ -124,6 +116,24 @@ const confirmParcel = async (id: string, user: any) => {
   return changableParcel;
 };
 
+const finterParcelByStatus = async (status: string) => {
+  
+  const filteredParcel = await Parcel.find({ currentStatus: status })
+
+   if (filteredParcel.length === 0) {
+     throw new AppError(403, `No parcel found in the status of ${status}`);
+   }
+  
+  const totalFilterdParcel = filteredParcel.length;
+ 
+ 
+  return {
+    data: filteredParcel,
+    meta: {
+      total: totalFilterdParcel,
+    },
+  };
+}
 
 const changeParcelStatus = async (id: string, user: any, status: string) => {
 
@@ -201,7 +211,16 @@ const ParcelByTrackingId = async (trackingId: string) => {
 
   return parcel;
 };
+const deleteParcel = async (id: string) => {
+  const parcel = await Parcel.findById(id);
 
+  if (!parcel) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'parcel does not exist');
+  }
+
+  const result = await Parcel.findOneAndDelete({ _id: id });
+  return result;
+};
 export const ParcelService = {
   createParcel,
   cancelParcel,
@@ -210,4 +229,6 @@ export const ParcelService = {
   ParcelByTrackingId,
   allParcel,
   confirmParcel,
+  deleteParcel,
+  finterParcelByStatus,
 };

@@ -30,6 +30,19 @@ const blockUser = catchAsync(async (req: Request, res: Response, next: NextFunct
     data: user
   })
 })
+const deleteUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const Id = req.params.id;
+
+
+     await UserServices.deleteUser(Id);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.CREATED,
+    message: "User  is deleted Successfully",
+   data: null
+  })
+})
 
 const getAllUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -49,4 +62,5 @@ export const UserControllers = {
   createUser,
   getAllUsers,
   blockUser,
+  deleteUser,
 };

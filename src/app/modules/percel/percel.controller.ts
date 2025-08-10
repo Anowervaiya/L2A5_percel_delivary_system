@@ -4,6 +4,7 @@ import { ParcelService } from './percel.service';
 import { sendResponse } from '../../utils/sendResponse';
 import httpStatus from 'http-status-codes';
 import { JwtPayload } from 'jsonwebtoken';
+import { ParcelStatus } from './percel.interface';
 
 const createParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -48,6 +49,34 @@ const confirmParcel = catchAsync(
     });
   }
 );
+const finterParcelByStatus = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+
+    const status  = req.query.status as string;
+    const result = await ParcelService.finterParcelByStatus(status.toUpperCase())
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.ACCEPTED,
+      message: 'specifice parcel is retrieved succesfully',
+      meta: result.meta,
+      data: result.data,
+    });
+  }
+);
+const deleteParcel = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const Id = req.params.id;
+
+
+     await ParcelService.deleteParcel(Id);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.ACCEPTED,
+    message: "Parcel  is deleted Successfully",
+   data: null
+  })
+})
 
 const changeParcelStatus = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -118,4 +147,6 @@ export const ParcelController = {
   ParcelByTrackingId,
   allParcel,
   confirmParcel,
+  deleteParcel,
+  finterParcelByStatus,
 };

@@ -83,8 +83,22 @@ const blockUser = async (id: string, status: boolean) => {
 
   return changableUser;
 };
+
+const deleteUser = async (id: string,) => {
+
+  const user = await User.findById(id)
+
+ if (!user) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'user does not exist');
+  }
+
+  const result = await User.findOneAndDelete({_id : id})
+  return result;
+};
+
 export const UserServices = {
   createUser,
   getAllUsers,
   blockUser,
+  deleteUser,
 };
