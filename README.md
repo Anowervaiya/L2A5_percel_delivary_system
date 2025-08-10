@@ -113,10 +113,11 @@ Each parcel contains a `statusLog` array to record every stage in its journey.
 
 ```json
 "statusLog": [
-  { "status": "created", "timestamp": "2025-08-09T14:30:00Z", "updatedBy": "userId" },
-  { "status": "picked-up", "timestamp": "2025-08-09T16:00:00Z", "updatedBy": "staffId" },
-  { "status": "in-transit", "timestamp": "2025-08-09T20:00:00Z", "updatedBy": "staffId" },
-  { "status": "delivered", "timestamp": "2025-08-10T12:00:00Z", "updatedBy": "staffId" }
+  { "status": "REQUESTED", "timestamp": "2025-08-09T14:30:00Z", "updatedBy": "senderId" },
+  { "status": "ACCEPTED", "timestamp": "2025-08-09T16:00:00Z", "updatedBy": "adminId" },
+  { "status": "DISPATCHED", "timestamp": "2025-08-09T20:00:00Z", "updatedBy": "adminId" },
+  { "status": "IN_TRANSIT", "timestamp": "2025-08-09T20:00:00Z", "updatedBy": "adminId" },
+  { "status": "DELIVERED", "timestamp": "2025-08-10T12:00:00Z", "updatedBy": "recieverId" }
 ]
 ```
 
