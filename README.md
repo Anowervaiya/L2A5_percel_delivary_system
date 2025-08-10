@@ -75,9 +75,7 @@ npm start
 |--------|-----------------------|-------------|
 | **POST** | `/api/v1/auth/login` | login a  user|
 | **POST** | `/api/v1/auth/set-password`    | set password for who sign in with google |
-
 | **GET**  | `/api/v1/auth/google`       | google login |
-
 | **GET**  | `/api/v1/auth/google`       | google callback api |
 
 ---
@@ -88,7 +86,6 @@ npm start
 |---------|---------------------------|--------------------|-------------|
 | **POST**    | `/api/v1/user/register`          | **anyone** | register a new user|
 | **GET**    | `/api/v1/user/all-user`         | **Admin**           | Get all users |
-
 | **PATCH**  | `/api/v1/user/delete/:id`         | **Admin**           | delete a user |
 | **DELETE** | `/api/v1/user/block/:id`         | **Admin**           |block or unblock a user|
 
