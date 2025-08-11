@@ -12,6 +12,16 @@ It supports **role-based access control (RBAC)** for Admin, Delivery Staff, and 
 
 ---
 
+## 🚀 Features
+- **User Registration** – Allows new users to register with the system.
+- **View All Users (Admin Only)** – Admins can fetch a list of all registered users.
+- **Delete User (Admin Only)** – Admins can delete specific users by their ID.
+- **Block/Unblock User (Admin Only)** – Admins can block or unblock specific users.
+- **Role-based Access Control** – Protects certain routes so only admins can access them.
+- **Secure Authentication Middleware** – Uses `checkAuth` to verify user roles before allowing access.
+
+---
+
 ## ⚙️ Setup & Environment Instructions
 
 ### 1️⃣ Clone the repository
