@@ -18,7 +18,7 @@ app.use(expressSession({
 app.use(passport.initialize())
 app.use(passport.session())
 
-
+app.set("trust proxy",1)
 
 app.use(cors());
 app.use(cookieParser());
