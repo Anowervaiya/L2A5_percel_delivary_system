@@ -7,6 +7,7 @@ import httpStatus from 'http-status-codes'
 import AppError from "../../errorHelpers/appError";
 
 const createUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+ 
   const user = await UserServices.createUser(req.body)
 
   sendResponse(res, {

@@ -7,6 +7,7 @@ import bcryptjs from "bcryptjs"
 import httpStatus from "http-status-codes"
 
 const createUser = async (payload: Partial<IUser>) => {
+  
   const { email, password, role, ...rest } = payload;
   const capitalizedRole = role?.toUpperCase()
   if (capitalizedRole === Role.ADMIN) {
