@@ -30,6 +30,10 @@ export const checkAuth =
       if (isUserExist.isBlock) {
         throw new AppError(httpStatus.BAD_REQUEST, `User is block`);
       }
+      // if (!isUserExist.isVerified) {
+      //   throw new AppError(httpStatus.BAD_REQUEST, `User is not verified`);
+      // }
+
       if (isUserExist.isDeleted) {
         throw new AppError(httpStatus.BAD_REQUEST, 'User is deleted');
       }

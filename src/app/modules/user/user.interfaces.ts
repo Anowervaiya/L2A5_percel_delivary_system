@@ -20,6 +20,7 @@ export interface IUser {
   picture?: string;
   address?: string;
   isBlock?: boolean;
+  isVerified?: boolean;
   isDeleted?: boolean;
   role: Role;
   auths: IAuthProvider[];

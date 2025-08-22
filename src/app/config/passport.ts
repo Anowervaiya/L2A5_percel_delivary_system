@@ -22,9 +22,13 @@ passport.use(
       try {
         const isUserExist = await User.findOne({ email });
 
-
         if (!isUserExist) {
           return done('User does not exist');
+        }
+
+        if (isUserExist.isDeleted) {
+          // throw new AppError(httpStatus.BAD_REQUEST, "User is deleted")
+          return done('User is deleted');
         }
 
         const isGoogleAuthenticated = isUserExist.auths.some(
@@ -41,14 +45,15 @@ passport.use(
           password as string,
           isUserExist.password as string
         );
-        
 
         if (!isPasswordMatched) {
           return done(null, false, { message: 'Password does not match' });
         }
 
-      
-
+        if (!isUserExist.isVerified) {
+          // throw new AppError(httpStatus.BAD_REQUEST, "User is not verified")
+          return done('User is not verified');
+        }
         return done(null, isUserExist);
       } catch (error) {
         console.log(error);
@@ -104,8 +109,6 @@ passport.use(
     }
   )
 );
-
-
 
 passport.serializeUser((user: any, done: (err: any, id?: unknown) => void) => {
   done(null, user._id);

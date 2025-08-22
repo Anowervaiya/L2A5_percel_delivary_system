@@ -22,6 +22,7 @@ const userSchema = new Schema<IUser>(
      default: Role.RECEIVER
     },
     isBlock:{type:Boolean , default : false},
+    isVerified:{type:Boolean , default : false},
     phone: { type: String },
     picture: { type: String },
     address: { type: String },

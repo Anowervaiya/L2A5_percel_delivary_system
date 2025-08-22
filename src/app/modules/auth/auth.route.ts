@@ -6,7 +6,7 @@ import { Role } from "../user/user.interfaces";
 
 const router = Router()
 
-router.post('/login', AuthConrollers.credentialsLogin)
+router.post('/login',AuthConrollers.credentialsLogin)
 
 router.post('/set-password' , checkAuth(...Object.values(Role)) , AuthConrollers.setPassword)
 
