@@ -1,14 +1,21 @@
+import { JwtPayload } from "jsonwebtoken";
 import AppError from "../../errorHelpers/appError";
 import { sendResponse } from "../../utils/sendResponse";
 import { IUser } from "../user/user.interfaces";
+import { User } from "../user/user.model";
 import { IParcel, ParcelStatus } from "./percel.interface";
 import { Parcel } from "./percel.model";
 import httpStatus from 'http-status-codes'
 
-const createParcel = async (user: any, payload: Partial<IParcel>) => {
-const  trackingId = `trackId_${Date.now()}_${Math.floor(Math.random() * 1000)}`
+const createParcel = async (user: JwtPayload, payload: Partial<IParcel>) => {
+  const trackingId = `trackId_${Date.now()}_${Math.floor(Math.random() * 1000)}`
+ 
+
+
   const info = {
+
     ...payload,
+     sender : user?.email,
     trackingId,
     statusLogs: [
       {

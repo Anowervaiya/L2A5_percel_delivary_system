@@ -25,8 +25,8 @@ export  interface IParcel {
   type: string;
   weight: number;
   fee: number;
-  sender: Types.ObjectId;
-  receiver: Types.ObjectId;
+  sender: string;
+  receiver: string;
   deliveryAddress: string;
   deliveryDate: Date;
   currentStatus?: string;

@@ -14,7 +14,7 @@ router.get('/all-parcel', checkAuth(Role.ADMIN), ParcelController.allParcel);
 
 router.post(
   '/create-parcel',
-  checkAuth(Role.SENDER),
+  checkAuth(Role.SENDER , Role.ADMIN),
   ParcelController.createParcel
 );
 router.get(

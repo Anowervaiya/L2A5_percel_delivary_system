@@ -9,7 +9,7 @@ import { ParcelStatus } from './percel.interface';
 const createParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
 
-    const user= req.user;
+    const user = req.user as JwtPayload;
     const parcel = await ParcelService.createParcel(user, req.body);
 
     sendResponse(res, {
