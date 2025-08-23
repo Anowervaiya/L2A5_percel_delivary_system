@@ -44,6 +44,27 @@ const credentialsLogin = catchAsync(async (req: Request, res: Response, next: Ne
 
 })
 
+const logout = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    res.clearCookie('accessToken', {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+    });
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+    });
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: 'User Logged Out Successfully',
+      data: null,
+    });
+  }
+);
 
 const gooleCallbackController = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const user = req.user; //google set user in req.user auto
@@ -77,5 +98,6 @@ const setPassword = catchAsync(
 export const AuthConrollers = {
   gooleCallbackController,
   credentialsLogin,
-  setPassword
+  setPassword,
+  logout,
 };

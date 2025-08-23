@@ -5,6 +5,7 @@ import { sendResponse } from "../../utils/sendResponse";
 
 import httpStatus from 'http-status-codes'
 import AppError from "../../errorHelpers/appError";
+import { JwtPayload } from "jsonwebtoken";
 
 const createUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
  
@@ -17,6 +18,19 @@ const createUser = catchAsync(async (req: Request, res: Response, next: NextFunc
     data: user
   })
 })
+
+const getMe = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const decodedToken = req.user as JwtPayload;
+    const result = await UserServices.getMe(decodedToken.userId);
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.CREATED,
+      message: 'Your profile Retrieved Successfully',
+      data: result.data,
+    });
+  }
+);
 const blockUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const Id = req.params.id;
   const status = req.body.isBlock;
@@ -63,5 +77,5 @@ export const UserControllers = {
   createUser,
   getAllUsers,
   blockUser,
-  deleteUser,
+  deleteUser,getMe
 };

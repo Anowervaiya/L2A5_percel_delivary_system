@@ -6,8 +6,8 @@ import { Role } from "../user/user.interfaces";
 
 const router = Router()
 
-router.post('/login',AuthConrollers.credentialsLogin)
-
+router.post('/login', AuthConrollers.credentialsLogin)
+router.post('/logout', AuthConrollers.logout);
 router.post('/set-password' , checkAuth(...Object.values(Role)) , AuthConrollers.setPassword)
 
 router.get('/google', async(req: Request, res: Response, next: NextFunction) => {
