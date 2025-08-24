@@ -38,24 +38,24 @@ const cancelParcel = async (id: string, user: any) => {
     throw new AppError(httpStatus.BAD_REQUEST, 'parcel does not exist');
   }
 
-   if (
-     parcel.statusLogs?.some(status => status.status === ParcelStatus.DISPATCHED || ParcelStatus.IN_TRANSIT)
-   ) {
-     throw new AppError(
-       httpStatus.BAD_GATEWAY,
-       "parcel is already DISPATCHED . you can't cancel it now"
-     );
-   }
+  const finalStatus = parcel.statusLogs?.find(
+    statusLog =>
+      statusLog.status === ParcelStatus.DISPATCHED ||
+      statusLog.status === ParcelStatus.IN_TRANSIT ||
+      statusLog.status === ParcelStatus.DELIVERED ||
+      statusLog.status === ParcelStatus.CANCELLED 
+      
+  );
 
-
-  if (
-    parcel.statusLogs?.some(status => status.status === ParcelStatus.CANCELLED)
-  ) {
+  if (finalStatus) {
     throw new AppError(
       httpStatus.BAD_GATEWAY,
-      "parcel is already cancelled .. you can't change the status"
+      `The parcel is already ${finalStatus.status}. You can't cancel it now.`
     );
   }
+
+
+
 
 
   const changableParcel = await Parcel.findByIdAndUpdate(
@@ -178,11 +178,11 @@ const changeParcelStatus = async (id: string, user: any, status: string) => {
 
   return changableParcel;
 };
-const myParcel = async (user : any) => {
-  const userId = user.userId;
+const myParcel = async (user : JwtPayload) => {
+ 
 
-  const sendedParcel = await Parcel.find({ sender: userId })
-  const receivedParcel = await Parcel.find({ receiver: userId })
+  const sendedParcel = await Parcel.find({ sender: user?.email })
+  const receivedParcel = await Parcel.find({ receiver: user?.email })
 
   if (sendedParcel.length === 0 && receivedParcel.length === 0) {
     throw new AppError(httpStatus.BAD_REQUEST, 'No parcels found');

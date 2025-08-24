@@ -31,19 +31,22 @@ router.get(
 
 router.patch(
   '/cancel/:id',
-  checkAuth(Role.SENDER),
+  checkAuth(...Object.values(Role)),
   ParcelController.cancelParcel
 );
+
 router.patch(
   '/confirm/:id',
-  checkAuth(Role.RECEIVER),
+  checkAuth(...Object.values(Role)),
   ParcelController.confirmParcel
 );
+
 router.patch(
   '/status/:id',
   checkAuth(Role.ADMIN),
   ParcelController.changeParcelStatus
 );
+
 router.delete(
   '/delete/:id',
   checkAuth(Role.ADMIN),

@@ -19,7 +19,7 @@ const userSchema = new Schema<IUser>(
     role: {
       type: String,
       enum: Object.values(Role),
-     default: Role.RECEIVER
+     default: Role.SENDER
     },
     isBlock:{type:Boolean , default : false},
     isVerified:{type:Boolean , default : false},

@@ -23,7 +23,7 @@ const createParcel = catchAsync(
 const cancelParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const Id = req.params.id;
-    const user = req.user as string;
+    const user = req.user as JwtPayload;
     const parcel = await ParcelService.cancelParcel(Id, user);
 
     sendResponse(res, {
@@ -95,7 +95,7 @@ const changeParcelStatus = catchAsync(
 );
 const myParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const user = req.user ;
+    const user = req.user as JwtPayload
 
    const parcel = await ParcelService.myParcel(user)
     
