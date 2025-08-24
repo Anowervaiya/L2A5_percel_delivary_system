@@ -32,11 +32,16 @@ const getMe = catchAsync(
   }
 );
 const blockUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const Id = req.params.id;
-  const status = req.body.isBlock;
-
-
-  const user = await UserServices.blockUser(Id, status);
+  
+   
+    const data = req.body;
+  const statusBoolean = data.status === 'true' ? true : false;
+   const payload = {
+     id: data.id,
+    isBlock: statusBoolean,
+  };
+  
+  const user = await UserServices.blockUser(payload);
 
   sendResponse(res, {
     success: true,

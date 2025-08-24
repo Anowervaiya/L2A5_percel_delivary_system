@@ -42,7 +42,7 @@ router.patch(
 );
 
 router.patch(
-  '/status/:id',
+  '/status',
   checkAuth(Role.ADMIN),
   ParcelController.changeParcelStatus
 );

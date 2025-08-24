@@ -80,16 +80,22 @@ const deleteParcel = catchAsync(async (req: Request, res: Response, next: NextFu
 
 const changeParcelStatus = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const Id = req.params.id;
-    const user = req.user as string;
-    const {status} = req.body;
-    const parcel = await ParcelService.changeParcelStatus(Id, user , status);
+  
+    const user = req.user as JwtPayload;
+    const data = req.body;
+    
+    const payload = {
+      ...data,
+      ...user
+    }
+   
+    const parcel = await ParcelService.changeParcelStatus( payload );
 
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.ACCEPTED,
       message: 'parcel status is changed succesfully',
-      data: parcel,
+      data: 'parcel',
     });
   }
 );

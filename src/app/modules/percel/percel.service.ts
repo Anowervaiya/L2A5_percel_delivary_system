@@ -142,9 +142,9 @@ const finterParcelByStatus = async (status: string) => {
   };
 }
 
-const changeParcelStatus = async (id: string, user: any, status: string) => {
+const changeParcelStatus = async (payload: any) => {
 
-  const parcel = await Parcel.findById( id )
+  const parcel = await Parcel.findById( payload.id )
   if (!parcel) {
     throw new AppError ( httpStatus.BAD_REQUEST,"parcel does not exist")
   }
@@ -154,21 +154,21 @@ const changeParcelStatus = async (id: string, user: any, status: string) => {
     throw new AppError(httpStatus.BAD_GATEWAY, "parcel is cancelled .. you can't change the status")
   }
   
-  if (parcel.statusLogs?.some(singleStatus => singleStatus.status === status)) {
-    throw new AppError(httpStatus.BAD_GATEWAY, `You have already ${status} this parcel`);
+  if (parcel.statusLogs?.some(singleStatus => singleStatus.status === payload.status)) {
+    throw new AppError(httpStatus.BAD_GATEWAY, `You have already ${payload.status} this parcel`);
   }
-  
+  console.log(payload);
 
   const changableParcel = await Parcel.findByIdAndUpdate(
-    id,
+    payload.id,
     {
       $set: {
-        currentStatus: status,
+        currentStatus: payload.status,
       },
       $push: {
         statusLogs: {
-          status: status,
-          updatedBy: user.userId,
+          status: payload.status,
+          updatedBy: payload.userId,
           updatedAt: new Date(),
         },
       },

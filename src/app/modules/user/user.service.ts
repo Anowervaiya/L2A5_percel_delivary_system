@@ -61,15 +61,15 @@ const getMe = async (userId: string) => {
     data: user,
   };
 };
-const blockUser = async (id: string, status: boolean) => {
+const blockUser = async (payload : {id: string , isBlock: boolean}) => {
   
-  const user = await User.findById(id);
+  const user = await User.findById(payload.id);
   
   if (!user) {
     throw new AppError(httpStatus.BAD_REQUEST, 'user does not exist');
   }
 
-  if (user.isBlock === status) {
+  if (user.isBlock === payload.isBlock) {
    throw new AppError(403, `user is already ${user.isBlock === true ? 'blocked' : 'unblock'}`)
  }
 
@@ -77,10 +77,10 @@ const blockUser = async (id: string, status: boolean) => {
 
 
   const changableUser = await User.findByIdAndUpdate(
-    id,
+    payload.id,
     {
       $set: {
-        isBlock: status,
+        isBlock: payload.isBlock,
       },
       
     },
