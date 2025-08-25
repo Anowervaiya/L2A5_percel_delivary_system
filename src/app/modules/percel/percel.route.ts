@@ -14,9 +14,10 @@ router.get('/all-parcel', checkAuth(Role.ADMIN), ParcelController.allParcel);
 
 router.post(
   '/create-parcel',
-  checkAuth(Role.SENDER , Role.ADMIN),
+  checkAuth(Role.SENDER),
   ParcelController.createParcel
 );
+
 router.get(
   '/filterByStatus',
   checkAuth(Role.ADMIN),
@@ -31,13 +32,13 @@ router.get(
 
 router.patch(
   '/cancel/:id',
-  checkAuth(...Object.values(Role)),
+  checkAuth(Role.SENDER),
   ParcelController.cancelParcel
 );
 
 router.patch(
   '/confirm/:id',
-  checkAuth(...Object.values(Role)),
+  checkAuth(Role.RECEIVER),
   ParcelController.confirmParcel
 );
 

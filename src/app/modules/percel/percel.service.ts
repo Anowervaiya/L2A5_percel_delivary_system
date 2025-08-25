@@ -124,20 +124,24 @@ const confirmParcel = async (id: string, user: any) => {
 };
 
 const finterParcelByStatus = async (status: string) => {
+
   
   const filteredParcel = await Parcel.find({ currentStatus: status })
+
 
    if (filteredParcel.length === 0) {
      throw new AppError(403, `No parcel found in the status of ${status}`);
    }
   
-  const totalFilterdParcel = filteredParcel.length;
+
  
- 
+
+  
+
   return {
     data: filteredParcel,
     meta: {
-      total: totalFilterdParcel,
+      total: filteredParcel?.length,
     },
   };
 }
@@ -157,7 +161,7 @@ const changeParcelStatus = async (payload: any) => {
   if (parcel.statusLogs?.some(singleStatus => singleStatus.status === payload.status)) {
     throw new AppError(httpStatus.BAD_GATEWAY, `You have already ${payload.status} this parcel`);
   }
-  console.log(payload);
+
 
   const changableParcel = await Parcel.findByIdAndUpdate(
     payload.id,
@@ -196,6 +200,8 @@ const allParcel = async () => {
   
 
   const parcel = await Parcel.find()
+  
+  
 
   const totalParcel = await Parcel.countDocuments();
   

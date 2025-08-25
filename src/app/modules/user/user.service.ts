@@ -71,6 +71,10 @@ const blockUser = async (payload : {id: string , isBlock: boolean}) => {
 
   if (user.isBlock === payload.isBlock) {
    throw new AppError(403, `user is already ${user.isBlock === true ? 'blocked' : 'unblock'}`)
+  }
+  
+  if (user.role === Role.ADMIN) {
+   throw new AppError(403, `you can't block or unblock an admin`)
  }
 
   

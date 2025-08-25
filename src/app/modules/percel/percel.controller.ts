@@ -10,6 +10,7 @@ const createParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
 
     const user = req.user as JwtPayload;
+
     const parcel = await ParcelService.createParcel(user, req.body);
 
     sendResponse(res, {
@@ -18,6 +19,7 @@ const createParcel = catchAsync(
       message: 'parcel is created succesfully',
       data: parcel,
     });
+
   }
 );
 const cancelParcel = catchAsync(
@@ -52,15 +54,16 @@ const confirmParcel = catchAsync(
 const finterParcelByStatus = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
 
-    const status  = req.query.status as string;
-    const result = await ParcelService.finterParcelByStatus(status.toUpperCase())
+    const {status} = req.query;
+
+    const result = await ParcelService.finterParcelByStatus(status as string)
 
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.ACCEPTED,
       message: 'specifice parcel is retrieved succesfully',
-      meta: result.meta,
-      data: result.data,
+      meta: result?.meta,
+      data: result?.data,
     });
   }
 );
